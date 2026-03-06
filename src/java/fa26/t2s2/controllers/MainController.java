@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 public class MainController extends HttpServlet {
 
     private static final String LOGIN_PAGE = "login.jsp";
-    private static final String LOGIN = "Login"; // 
+    private static final String LOGIN = "Login";
     private static final String LOGIN_CONTROLLER = "LoginController";
     private static final String SEARCH = "Search";
     private static final String SEARCH_CONTROLLER = "SearchController";
@@ -21,6 +21,27 @@ public class MainController extends HttpServlet {
     private static final String DELETE_CONTROLLER = "DeleteController";
     private static final String LOGOUT = "Logout";
     private static final String LOGOUT_CONTROLLER = "LogoutController";
+    private static final String CREATE = "Create";
+    private static final String CREATE_CONTROLLER = "CreateController";
+    private static final String ADD = "Add";
+    private static final String ADD_CONTROLLER = "AddController";
+    //-----------------add V2---------------------
+    private static final String ADDv2_CONTROLLER = "AddControllerV2";
+    //-------------------------------------------------
+    private static final String VIEW = "View";
+    private static final String VIEW_CART_PAGE = "viewCart.jsp";
+    private static final String EDIT = "Edit";
+    private static final String EDIT_CONTROLLER = "EditController";
+    private static final String REMOVE = "Remove";
+    private static final String REMOVE_CONTROLLER = "RemoveController";
+    private static final String CHECKOUT = "Checkout";
+    private static final String CHECKOUT_CONTROLLER = "CheckoutController";
+    private static final String GET_PRODUCTS = "GetProducts";
+    private static final String GET_PRODUCTS_CONTROLLER = "GetProductsController";
+    private static final String SHOP = "Shop";
+    private static final String SHOP_CONTROLLER = "ShopController";
+    private static final String ORDER = "Order";
+    private static final String ORDER_CONTROLLER = "OrderController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -38,6 +59,24 @@ public class MainController extends HttpServlet {
                 url = DELETE_CONTROLLER;
             } else if (LOGOUT.equals(action)) {
                 url = LOGOUT_CONTROLLER;
+            } else if (CREATE.equals(action)) {
+                url = CREATE_CONTROLLER;
+            } else if (ADD.equals(action)) {
+                url = ADDv2_CONTROLLER; // SET Lai
+            } else if (VIEW.equals(action)) {
+                url = VIEW_CART_PAGE;
+            } else if (EDIT.equals(action)) {
+                url = EDIT_CONTROLLER;
+            } else if (REMOVE.equals(action)) {
+                url = REMOVE_CONTROLLER;
+            } else if (CHECKOUT.equals(action)) {
+                url = CHECKOUT_CONTROLLER;
+            } else if (GET_PRODUCTS.equals(action)) {
+                url = GET_PRODUCTS_CONTROLLER;
+            } else if (SHOP.equals(action)) {
+                url = SHOP_CONTROLLER;
+            } else if (ORDER.equals(action)) {
+                url = ORDER_CONTROLLER;
             }
         } catch (Exception e) {
             log("Error at MainController: " + e.toString());

@@ -18,6 +18,8 @@ public class UserDAO {
     private static final String SEARCH = "SELECT userID, roleID, fullName FROM tblUsers WHERE fullName like ? ";
     private static final String UPDATE = "UPDATE tblUsers SET fullName = ?, roleID = ?  WHERE userID = ?";
     private static final String DELETE = "DELETE tblUsers WHERE userID=?";
+    private static final String DUPLICATE = "SELECT fullName FROM tblUsers WHERE userID = ?";
+    private static final String INSERT = "INSERT INTO tblUsers (userID, fullName, password,roleID,status) VALUES (?,?,?,?,?)";
 
     public UserDTO checkLogin(String userID, String password) throws SQLException {
         UserDTO user = null;
@@ -125,6 +127,67 @@ public class UserDAO {
             if (conn != null) {
                 ptm = conn.prepareStatement(DELETE);
                 ptm.setString(1, userID);
+                check = ptm.executeUpdate() > 0 ? true : false;
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+
+            if (ptm != null) {
+                ptm.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return check;
+    }
+
+    public boolean checkDuplicate(String userID) throws SQLException {
+        boolean check = false;
+        Connection conn = null;
+        PreparedStatement ptm = null;
+        ResultSet rs = null;
+        try {
+            conn = DBUtils.getConnection();
+            if (conn != null) {
+                ptm = conn.prepareStatement(DUPLICATE);
+                ptm.setString(1, userID);
+                rs = ptm.executeQuery();
+                if (rs.next()) {
+                    check = true;
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+
+            if (ptm != null) {
+                ptm.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return check;
+    }
+
+    public boolean insertUser(UserDTO user) throws SQLException {
+        boolean check = false;
+        Connection conn = null;
+        PreparedStatement ptm = null;
+        try {
+            conn = DBUtils.getConnection();
+            if (conn != null) {
+                ptm = conn.prepareStatement(INSERT);
+                ptm.setString(1, user.getUserID());
+                ptm.setString(2, user.getFullName());
+                ptm.setString(3, user.getPassword());
+                ptm.setString(4, user.getRoleID());
+                ptm.setString(5, "true");
+
                 check = ptm.executeUpdate() > 0 ? true : false;
 
             }

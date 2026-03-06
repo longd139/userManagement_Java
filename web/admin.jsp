@@ -1,4 +1,4 @@
-<%-- 
+    <%-- 
     Document   : admin
     Created on : Jan 22, 2026, 10:46:08 AM
     Author     : ADMIN
@@ -98,6 +98,7 @@
         %>
 
         <a href="MainController?action=Logout">Logout</a>
+        <a href="createUser.jsp">Create User</a>
 
 
     </body>

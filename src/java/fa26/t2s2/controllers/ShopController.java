@@ -1,54 +1,35 @@
 package fa26.t2s2.controllers;
 
-import fa26.t2s2.users.UserDAO;
-import fa26.t2s2.users.UserDTO;
+import fa26.t2s2.users.shopping.Product;
+import fa26.t2s2.users.shopping.ProductDAO;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
-public class LoginController extends HttpServlet {
+@WebServlet(name = "ShopController", urlPatterns = {"/ShopController"})
+public class ShopController extends HttpServlet {
 
-    private static final String LOGIN_PAGE = "login.jsp";
+    private static final String SHOP_PAGE = "shopp.jsp";
     private static final String USER_PAGE = "user.jsp";
-    private static final String US = "US";
-    private static final String ADMIN_PAGE = "admin.jsp";
-    private static final String AD = "AD";
-    private static final String ROLE_NOT_SUPPORT_MSG = "Your role is not supported !";
-    private static final String INFO_INCORRECT = "UserID or Password incorrect!";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = LOGIN_PAGE;
+        String url = SHOP_PAGE;
         try {
-            String userID = request.getParameter("userID");
-            String password = request.getParameter("password");
-            UserDAO dao = new UserDAO();
-            UserDTO loginUser = dao.checkLogin(userID, password);
-
-            if (loginUser != null) {
-                HttpSession session = request.getSession();
-                session.setAttribute("LOGIN_USER", loginUser);
-                // phân quyen o day
-                String roleID = loginUser.getRoleID();
-                if (AD.equals(roleID)) {
-                    url = ADMIN_PAGE;
-                } else if (US.equals(roleID)) {
-                    url = USER_PAGE;
-                } else {
-                    request.setAttribute("ERROR_MESSAGE", ROLE_NOT_SUPPORT_MSG);
-                }
-            } else {
-                request.setAttribute("ERROR_MESSAGE", INFO_INCORRECT);
+            ProductDAO loadSQL = new ProductDAO();
+            List<Product> listP = loadSQL.getListProductFormSQL();
+            if (listP != null) {
+                request.setAttribute("LIST_PRODUCTS", listP);
+                url = SHOP_PAGE;
             }
         } catch (Exception e) {
-            log("Error at LoginController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

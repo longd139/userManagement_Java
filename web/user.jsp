@@ -20,6 +20,11 @@
                 return;
             }
         %>
+        
+        <!--<a href="shopp.jsp">Shopping</a>-->
+        <a href="MainController?action=Shop">Shopping</a> <br>
+        <a href="MainController?action=Order">Your order</a> <br>
+
         UserID: <%=loginUser.getUserID()%> </br>
         Fullname: <%=loginUser.getFullName()%>  </br>
         RoleID: <%=loginUser.getRoleID()%> </br>
@@ -30,6 +35,12 @@
             <input type="submit" value="Logout"/>
             
         </form>
+        <%
+            String msg = (String) request.getAttribute("MSG");
+            if(msg == null) msg = "";
+            
+        %>
+        <h3><%=msg%></h3>
         
         
     </body>
