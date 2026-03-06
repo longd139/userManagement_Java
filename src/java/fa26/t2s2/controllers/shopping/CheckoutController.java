@@ -4,6 +4,8 @@ import fa26.t2s2.users.UserDTO;
 import fa26.t2s2.users.shopping.Cart;
 import fa26.t2s2.users.shopping.OrderDAO;
 import fa26.t2s2.users.shopping.OrderDTO;
+import fa26.t2s2.users.shopping.OrderDetailDAO;
+import fa26.t2s2.users.shopping.OrderDetailDTO;
 import fa26.t2s2.users.shopping.Product;
 import fa26.t2s2.users.shopping.ProductDAO;
 
@@ -45,20 +47,31 @@ public class CheckoutController extends HttpServlet {
                     }
                 }
                 if (listEmptyProduct.isEmpty()) {
-                    for (Product p : cart.getCart().values()) {
-                        p_dao.updateQuantity(p);
-                    }
-                    cart = null;
-                    session.setAttribute("CART", cart);
                     // Them vao order
                     UserDTO user = (UserDTO) session.getAttribute("LOGIN_USER");
                     OrderDAO order_dao = new OrderDAO();
-                    OrderDTO order = new OrderDTO(LocalDate.now(), 0, user.getUserID());
-                    boolean addOrder = order_dao.add(order);
+                    OrderDTO order = new OrderDTO(LocalDate.now(), cart.getTotal(), user.getUserID());
                     //-----------------
+                    // neu them vao order loi lap tuc huy order
+                    boolean addOrder = order_dao.add(order);
                     if (addOrder) {
-                        url = SUCCESS;
-                        request.setAttribute("MSG", "Checkout successfully! Check your oder !");
+
+                        // them vao order detail
+                        OrderDetailDAO orderDetail_dao = new OrderDetailDAO();
+                        boolean isAdd = orderDetail_dao.add(order.getNewOrderID(), cart);
+                        // --------------------------------
+                        // checkout
+                        if (isAdd) {
+                            for (Product p : cart.getCart().values()) {
+                                p_dao.updateQuantity(p);
+
+                            }
+                            cart = null;
+                            session.setAttribute("CART", cart);
+                            url = SUCCESS;
+                            request.setAttribute("MSG", "Checkout successfully! Check your oder !");
+                        }
+                        // -------------------
                     }
                 } else {
                     for (Product p : cart.getCart().values()) {

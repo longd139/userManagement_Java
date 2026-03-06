@@ -89,4 +89,13 @@ public class Cart {
         }
         return check;
     }
+
+    public double getTotal() {
+        double total = 0;
+        for (Product p : getCart().values()) {
+            total += p.getPrice();
+        }
+        return total;
+    }
+
 }

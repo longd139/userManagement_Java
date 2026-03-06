@@ -1,5 +1,6 @@
 package fa26.t2s2.users.shopping;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class OrderDTO {
@@ -30,6 +31,12 @@ public class OrderDTO {
 
     public int getOrderID() {
         return OrderID;
+    }
+
+    public int getNewOrderID() throws SQLException {
+        OrderDAO od_dao = new OrderDAO();
+        int oid = od_dao.getNewOid();
+        return oid;
     }
 
     public void setOrderID(int OrderID) {

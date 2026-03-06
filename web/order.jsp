@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : oder
     Created on : Mar 5, 2026, 10:27:15 PM
     Author     : ADMIN
@@ -18,13 +18,14 @@
         <h1>Your orders.</h1>
         <%
             UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
-            if(loginUser == null || !"US".equals(loginUser.getRoleID())){
+            if (loginUser == null || !"US".equals(loginUser.getRoleID())) {
                 response.sendRedirect("login.jsp");
                 return;
             }
         %>
         <%
             List<OrderDTO> listOrder = (List) request.getAttribute("LIST_ORDER");
+            if (listOrder != null && listOrder.size() > 0) {
         %>
         <table border="1">
             <thead>
@@ -36,23 +37,28 @@
                 </tr>
             </thead>
             <tbody>
-            <%
-                if(listOrder != null){
-                    for (OrderDTO od : listOrder) {                           
-                        
-            %>
+                <%
+                    for (OrderDTO od : listOrder) {
+
+                %>
                 <tr>
                     <td><%= od.getOrderID()%></td>
                     <td><%= od.getDate()%></td>
                     <td><%= od.getTotal()%></td>
                     <td>detail</td>
                 </tr>
-            <%
+                <%
                     }
-                }
-            %>
+                %>
             </tbody>
         </table>
+        <%
+        } else {
+        %>
+        <h3>Your cart is feeling a bit lonely.</h3>
+        <%
+            }
+        %>
 
     </body>
 </html>
